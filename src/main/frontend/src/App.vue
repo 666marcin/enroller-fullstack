@@ -1,19 +1,27 @@
 <template>
-  <div id="app">
-    <h1>
-      <img src="./assets/logo.svg" alt="Enroller" class="logo">
-      System do zapisÃ³w na zajÄ™cia
-    </h1>
-    <div v-if="authenticatedUsername">
-      <h2>Witaj {{ authenticatedUsername }}!
-        <a @click="logout()" class="float-right  button-outline button">Wyloguj</a>
-      </h2>
-      <meetings-page :username="authenticatedUsername"></meetings-page>
-    </div>
-    <div v-else>
-      <login-form @login="login($event)"></login-form>
-    </div>
-  </div>
+<div id="app">
+	<h1>
+		<img src="./assets/logo.svg" alt="Enroller" class="logo"> System
+		do zapisÃ³w na zajÄ™cia
+	</h1>
+	<div v-if="authenticatedUsername">
+		<h2>
+			Witaj {{ authenticatedUsername }}! <a @click="logout()"
+				class="float-right  button-outline button">Wyloguj</a>
+		</h2>
+		<meetings-page :username="authenticatedUsername"></meetings-page>
+	</div>
+	<div v-else>
+		<button @click="registering = false"
+			:class="!registering ? '' : 'button-outline'">Loguje siê</button>
+		<button @click="registering = true"
+			:class="registering ? '' : 'button-outline'">Rejestruje siê
+		</button>
+		<login-form v-if="!registering" @login="login($event)"></login-form>
+		<login-form v-else button-label="Zarejestruj siê"
+			@login="register($event)"></login-form>
+	</div>
+</div>
 </template>
 
 <script>
@@ -25,7 +33,8 @@
         components: {LoginForm, MeetingsPage},
         data() {
             return {
-                authenticatedUsername: ""
+                authenticatedUsername: "",
+                	registering : false
             };
         },
         methods: {
@@ -34,19 +43,28 @@
             },
             logout() {
                 this.authenticatedUsername = '';
-            }
+            },
+            register(user) {
+            	 this.$http.post('participants', user)
+            	     .then(response => {
+            	         alert('uda³o siê');
+            	     })
+            	     .catch(response => {
+            	         alert('nie uda³o sie');     
+            	     });
+            	}
         }
     };
 </script>
 
 <style>
-  #app {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
+#app {
+	max-width: 1000px;
+	margin: 0 auto;
+}
 
-  .logo {
-    vertical-align: middle;
-  }
+.logo {
+	vertical-align: middle;
+}
 </style>
 
