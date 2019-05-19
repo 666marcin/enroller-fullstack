@@ -15,13 +15,13 @@
       <td>
         <ul v-if="meeting.participants">
           <li v-for="participant in meeting.participants" :key="participant">
-            {{ participant }}
+            {{ participant }} <!-- roznica!!!!!!!!!!!!!!! -->
           </li>
         </ul>
       </td>
       <td style="text-align: right; min-width: 400px">
-        <button v-if="meeting.participants.indexOf(username) < 0" class="button-outline"
-                @click="$emit('attend', meeting)">
+        <button v-if="meeting.participants.indexOf(username) < 0" class="button-outline" 
+                @click="$emit('attend', meeting)"> <!-- roznica!!!!!!!!!!!!!!! -->
           Zapisz się
         </button>
         <button v-else class="button-outline" @click="$emit('unattend', meeting)">Wypisz się</button>
